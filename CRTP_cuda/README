@@ -1,0 +1,9 @@
+This example is meant to illustrate two things, using the CRTP (Curiously Recurring Template Pattern) and Variadic Templates in NVIDIA's CUDA.
+The value of using CRTP is that is effectively allows virtual methods (since subclass methods are called from the base class) which sidesteps CUDA's requirement that no virtual methods exist in device side classes.
+The value of using Variadic Templates is that it provides a concise way of expressing a function that has any number of input parameters (I have provided just a few compile time conformance checks but many more could reasonably be added).
+
+In this example a base class for taking averages is used as the entry point to calculating two different types of average, Harmonic means and Geometric means, using the CRTP.
+Multiple arrays are provided to the base classes calculate method and are forwarded to the subclasses. The constraints are that the first array passed in holds floating point numbers and the other arrays must be numeric.
+The number of input arrays must be at least 2 but can be any number greater than that. Each entry at a respective position in the input arrays will be averaged with every other entry at that same respective position and stored in the result array.
+For example if one wanted to average four numbers then they could pass 4 single entry arrays into the calculate method and a single result would be generated. 
+The power of working on a video card is parallelism so it is expected that each array will have many entries that are aligned by index for averaging (it is assumed that each array is the same size).
